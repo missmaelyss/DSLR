@@ -67,6 +67,34 @@ def collectDataFromTab(tab):
 			i += 1
 	return datas
 
+def collectGoodDataFromTab(tab):
+	
+	datas = []
+
+	i = 0
+	for feature in tab[0]:
+		datas.append([feature])
+		i += 1
+	
+	for line in tab[1:]:
+		possible = 1
+		for data in line[6:]:
+			try:
+				float(data)
+			except:
+				possible = 0
+		if possible == 1:
+			i = 0
+			for data in line:
+				try:
+					float(data)
+				except:
+					datas[i].append(data)
+				else:
+					datas[i].append(float(data))
+				i += 1
+	return datas
+
 def infoDict(datas):
 	ret = {}
 

@@ -4,83 +4,62 @@ from math import *
 
 Slytherin, Ravenclaw, Hufflepuff, Gryffindor = rd.createTab(rd.readFile())
 
-SlytherinDatas = rd.infoDict(rd.collectDataFromTab(Slytherin))
-RavenclawDatas = rd.infoDict(rd.collectDataFromTab(Ravenclaw))
-HufflepuffDatas = rd.infoDict(rd.collectDataFromTab(Hufflepuff))
-GryffindorDatas = rd.infoDict(rd.collectDataFromTab(Gryffindor))
+SlytherinDatas = rd.collectDataFromTab(Slytherin)
+RavenclawDatas = rd.collectDataFromTab(Ravenclaw)
+HufflepuffDatas = rd.collectDataFromTab(Hufflepuff)
+GryffindorDatas = rd.collectDataFromTab(Gryffindor)
 
-# print(SlytherinDatas)
-# print(RavenclawDatas)
-# print(HufflepuffDatas)
-# print(GryffindorDatas)
+for histogramme in ['Arithmancy', 'Astronomy', 'Herbology', 'Defense Against the Dark Arts', 'Divination', 'Muggle Studies', 'Ancient Runes', 'History of Magic', 'Transfiguration', 'Potions', 'Care of Magical Creatures', 'Charms', 'Flying']:
+	plt.subplots(figsize=(35, 12))
+	plt.suptitle("Quel cours de Poudlard a une repartition des notes homogenes entre les quatres maisons ?")
+	plt.title(histogramme)
+	plt.ylabel("Nombre d'eleve")
+	plt.xlabel("Note")
+	g = []
+	for feature in GryffindorDatas:
+		if feature[0] == histogramme:
+			for grade in feature[1:]:
+				try:
+					float(grade)
+				except:
+					pass
+				else:
+					g.append(float(grade))
 
-std = []
-feature = []
+	h = []
+	for feature in HufflepuffDatas:
+		if feature[0] == histogramme:
+			for grade in feature[1:]:
+				try:
+					float(grade)
+				except:
+					pass
+				else:
+					h.append(float(grade))
 
-for cle, data in SlytherinDatas.items():
-	print(cle, data["std"])
-	if cle == 'Index':
-		pass
-	else:
-		feature.append(cle)
-		std.append(data["std"])
+	r = []
+	for feature in RavenclawDatas:
+		if feature[0] == histogramme:
+			for grade in feature[1:]:
+				try:
+					float(grade)
+				except:
+					pass
+				else:
+					r.append(float(grade))
 
-x = range(len(std))
+	s = []
+	for feature in SlytherinDatas:
+		if feature[0] == histogramme:
+			for grade in feature[1:]:
+				try:
+					float(grade)
+				except:
+					pass
+				else:
+					s.append(float(grade))
 
-plt.subplots(figsize=(35, 12))
-
-plt.title('Quel cours de Poudlard a une répartition des notes homogènes entre les quatres maisons ?', 
-  loc='center', 
-  fontsize=16)
-
-plt.bar(x, std, color='green', alpha=0.2)
-
-std = []
-feature = []
-
-for cle, data in RavenclawDatas.items():
-	print(cle, data["std"])
-	if cle == 'Index':
-		pass
-	else:
-		feature.append(cle)
-		std.append(data["std"])
-
-
-plt.bar(x, std, color='blue', alpha=0.2)
-
-std = []
-feature = []
-
-for cle, data in HufflepuffDatas.items():
-	print(cle, data["std"])
-	if cle == 'Index':
-		pass
-	else:
-		feature.append(cle)
-		std.append(data["std"])
-
-
-plt.bar(x, std, color='yellow', alpha=0.2)
-
-std = []
-feature = []
-
-for cle, data in GryffindorDatas.items():
-	print(cle, data["std"])
-	if cle == 'Index':
-		pass
-	else:
-		feature.append(cle)
-		std.append(data["std"])
-
-
-plt.bar(x, std, color='red', alpha=0.2)
-
-plt.xticks(x, (feature), fontsize = 8)
-plt.yticks(fontsize = 8)
-
-plt.ylabel('std')
-plt.xlabel('Cours')
-
-plt.show()
+	num_bins = 20
+	plt.hist([g,s,h,r], num_bins,color=['red', 'green', 'yellow', 'blue'], alpha = 0.7, histtype = 'barstacked', label = ['Gryffindor', 'Slytherin', 'Hufflepuff', 'Ravenclaw'])
+	plt.legend()
+	plt.show()
